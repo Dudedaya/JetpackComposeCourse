@@ -14,12 +14,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import xyz.dudedayaworks.jetpackcompose.playground.ui.theme.JetpackComposePlaygroundTheme
 
 @Composable
@@ -45,31 +49,32 @@ fun InstagramHeader() {
                         .size(48.dp)
                         .background(color = Color.Green),
                 )
-                CounterWithText()
-                CounterWithText()
-                CounterWithText()
+                CounterWithText(count = "555", text = "posts")
+                CounterWithText(count = "12M", text = "followers")
+                CounterWithText(count = "12345", text = "following")
             }
         }
     }
 }
 
 @Composable
-private fun CounterWithText() {
+private fun CounterWithText(count: String, text: String) {
     Column(
         modifier = Modifier
             .height(64.dp),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(
-            modifier = Modifier
-                .size(32.dp)
-                .background(color = Color.Red)
+        Text(
+            text = count,
+            fontSize = 22.sp,
+            fontWeight = FontWeight.SemiBold,
+            fontFamily = FontFamily.Serif,
         )
-        Box(
-            modifier = Modifier
-                .size(16.dp)
-                .background(color = Color.Blue)
+        Text(
+            text = text,
+            fontFamily = FontFamily.Monospace,
+            fontSize = 14.sp,
         )
     }
 }
