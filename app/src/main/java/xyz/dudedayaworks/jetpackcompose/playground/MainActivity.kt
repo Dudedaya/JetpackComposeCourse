@@ -5,20 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,18 +38,22 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Preview(showBackground = false)
+@Preview(showBackground = true)
 @Composable
 fun ImageExample() {
-    Image(
+    Box(
         modifier = Modifier
-            .clip(CircleShape)
-            .background(Brush.linearGradient(colors = listOf(Color.Magenta, Color(0xFF7F00FF))))
-            .padding(8.dp)
-            .border(width = 4.dp, color = Color.White, shape = CircleShape),
-        painter = painterResource(id = R.drawable.ic_launcher_foreground),
-        contentDescription = stringResource(id = R.string.app_name),
-        colorFilter = ColorFilter.tint(color = Color.White),
-        contentScale = ContentScale.Fit,
-    )
+            .size(200.dp)
+            .background(Color.Magenta),
+    ) {
+        Image(
+            modifier = Modifier
+                .padding(25.dp)
+                .size(100.dp)
+                .background(Color.Yellow),
+            painter = ColorPainter(color = Color(0xFF7F00FF)),
+            contentDescription = stringResource(id = R.string.app_name),
+            contentScale = ContentScale.Fit,
+        )
+    }
 }
