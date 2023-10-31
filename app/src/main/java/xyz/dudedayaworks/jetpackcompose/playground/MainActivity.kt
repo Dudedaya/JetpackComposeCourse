@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            MultiplicationTable()
         }
     }
 }
@@ -41,12 +42,13 @@ fun MultiplicationTable() {
                     .weight(1f),
             ) {
                 for (j in 1 until 10) {
+                    val backgroundColor = if ((j + i) % 2 == 0) Color.Yellow else Color.White
                     Box(
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxSize()
-                            .background(color = if ((j + i % 2) % 2 == 0) Color.Yellow else Color.White)
-                            .border(width = 2.dp, color = Color.Black),
+                            .background(color = backgroundColor)
+                            .border(width = 1.dp, color = Color.Black),
                         contentAlignment = Alignment.Center,
                     ) {
                         val firstRowOrColumn = i == 1 || j == 1
