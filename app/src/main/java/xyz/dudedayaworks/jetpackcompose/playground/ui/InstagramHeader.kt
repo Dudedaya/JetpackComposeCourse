@@ -7,12 +7,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -45,11 +48,12 @@ fun InstagramHeader() {
             containerColor = MaterialTheme.colorScheme.background,
         )
     ) {
-        Column {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -82,6 +86,37 @@ fun InstagramHeader() {
                 CounterWithText(count = "12M", text = "followers")
                 CounterWithText(count = "12345", text = "following")
             }
+            Text(
+                text = "Instagram",
+                fontSize = 28.sp,
+                fontFamily = FontFamily.Cursive,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+            Text(
+                text = "#YoursToMake",
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+            Text(
+                text = "www.facebook.com/emotional_health",
+                fontSize = 14.sp,
+                modifier = Modifier.padding(top = 4.dp)
+            )
+            Button(
+                modifier = Modifier.padding(top = 4.dp),
+                onClick = {},
+                shape = RoundedCornerShape(4.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
+            ) {
+                Text(
+                    text = "Follow",
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp,
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
