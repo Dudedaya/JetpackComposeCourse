@@ -1,6 +1,7 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
@@ -45,6 +44,7 @@ fun PostCard(postItem: PostItem) {
                     .fillMaxWidth()
                     .padding(vertical = 8.dp),
                 text = postItem.message,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
             Image(
                 modifier = Modifier
@@ -99,50 +99,45 @@ private fun PostFooter(postItem: PostItem) {
             .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
+        Row(Modifier.weight(1f)) {
+            IconWithText(
+                iconResId = R.drawable.ic_views,
+                text = postItem.viewsCount.toString(),
+            )
+        }
+        Row(
+            Modifier.weight(1f),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            IconWithText(
+                iconResId = R.drawable.ic_share,
+                text = postItem.sharesCount.toString(),
+            )
+            IconWithText(
+                iconResId = R.drawable.ic_comment,
+                text = postItem.commentsCount.toString(),
+            )
+            IconWithText(
+                iconResId = if (postItem.liked) R.drawable.ic_like_fill else R.drawable.ic_like_outline,
+                text = postItem.likesCount.toString(),
+            )
+        }
+    }
+}
+
+@Composable
+private fun IconWithText(iconResId: Int, text: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            painter = painterResource(id = iconResId),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSecondary,
+        )
         Text(
-            text = postItem.viewsCount.toString(),
+            modifier = Modifier.padding(start = 2.dp),
+            text = text,
             fontFamily = FontFamily.Monospace,
-            color = Color.Gray,
-        )
-        Image(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            painter = painterResource(id = R.drawable.ic_views),
-            contentDescription = "views",
-            colorFilter = ColorFilter.tint(color = Color.Gray),
-        )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = postItem.sharesCount.toString(),
-            fontFamily = FontFamily.Monospace,
-            color = Color.Gray,
-        )
-        Image(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            painter = painterResource(id = R.drawable.ic_share),
-            contentDescription = "reposts",
-            colorFilter = ColorFilter.tint(color = Color.Gray),
-        )
-        Text(
-            text = postItem.commentsCount.toString(),
-            fontFamily = FontFamily.Monospace,
-            color = Color.Gray,
-        )
-        Image(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            painter = painterResource(id = R.drawable.ic_comment),
-            contentDescription = "comments",
-            colorFilter = ColorFilter.tint(color = Color.Gray),
-        )
-        Text(
-            text = postItem.likesCount.toString(),
-            fontFamily = FontFamily.Monospace,
-            color = Color.Gray,
-        )
-        Image(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            painter = painterResource(id = if (postItem.liked) R.drawable.ic_like_fill else R.drawable.ic_like_outline),
-            contentDescription = "likes",
-            colorFilter = ColorFilter.tint(color = Color.Gray),
+            color = MaterialTheme.colorScheme.onSecondary,
         )
     }
 }
