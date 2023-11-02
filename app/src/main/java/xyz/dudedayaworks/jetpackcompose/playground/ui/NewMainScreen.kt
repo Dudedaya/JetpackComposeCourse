@@ -3,15 +3,9 @@ package xyz.dudedayaworks.jetpackcompose.playground.ui
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -21,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +23,16 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun MainScreen() {
     Scaffold(
-        bottomBar = { MainBottomBar() }
+        bottomBar = {
+            MainBottomBar(
+                navigationItems = listOf(
+                    NavigationItem.Home,
+                    NavigationItem.Favorites,
+                    NavigationItem.Profile,
+                ),
+                default = NavigationItem.Home,
+            )
+        }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -42,34 +45,27 @@ fun MainScreen() {
 }
 
 @Composable
-private fun MainBottomBar() {
+private fun MainBottomBar(navigationItems: List<NavigationItem>, default: NavigationItem) {
     val selectionState = remember {
-        mutableStateOf(0)
+        mutableStateOf(default)
     }
-    val icons = listOf(
-        Icons.Outlined.Home to Icons.Filled.Home,
-        Icons.Outlined.Favorite to Icons.Filled.Favorite,
-        Icons.Outlined.Person to Icons.Filled.Person,
-    )
     NavigationBar {
-        icons.forEachIndexed { index, (iconUnselected, iconSelected) ->
-            val isSelected = selectionState.value == index
-            val name = iconUnselected.name.split(".").last()
+        navigationItems.forEach { item ->
             NavigationBarItem(
-                selected = isSelected,
-                onClick = { selectionState.value = index },
+                selected = selectionState.value == item,
+                onClick = { selectionState.value = item },
                 icon = {
                     Icon(
-                        imageVector = if (isSelected) iconSelected else iconUnselected,
-                        contentDescription = name,
+                        imageVector = item.icon,
+                        contentDescription = null,
                     )
                 },
-                label = { Text(text = name) },
+                label = { Text(text = stringResource(id = item.titleResId)) },
                 colors = NavigationBarItemDefaults.colors(
-                    selectedIconColor = Color.Black,
-                    selectedTextColor = Color.Black,
-                    unselectedIconColor = Color.Gray,
-                    unselectedTextColor = Color.Gray,
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    unselectedIconColor = MaterialTheme.colorScheme.secondary,
+                    unselectedTextColor = MaterialTheme.colorScheme.secondary,
                 ),
             )
         }
