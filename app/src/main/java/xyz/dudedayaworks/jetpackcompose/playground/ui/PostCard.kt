@@ -1,6 +1,7 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,14 +27,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import xyz.dudedayaworks.jetpackcompose.playground.PostItem
 import xyz.dudedayaworks.jetpackcompose.playground.R
+import xyz.dudedayaworks.jetpackcompose.playground.domain.PostItem
+import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticItem
+import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticType
 import xyz.dudedayaworks.jetpackcompose.playground.ui.theme.JetpackComposePlaygroundTheme
 
 @Composable
-fun PostCard(postItem: PostItem) {
+fun PostCard(
+    modifier: Modifier = Modifier,
+    postItem: PostItem,
+    onStatisticsItemClick: (StatisticType) -> Unit,
+) {
     Card(
-        modifier = Modifier.wrapContentSize(),
+        modifier = modifier.wrapContentSize(),
     ) {
         Column(
             modifier = Modifier.padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 16.dp)
@@ -48,12 +55,16 @@ fun PostCard(postItem: PostItem) {
             )
             Image(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .height(200.dp),
                 painter = painterResource(id = postItem.imageResId),
                 contentDescription = "post",
                 contentScale = ContentScale.FillWidth,
             )
-            PostFooter(postItem)
+            Statistics(
+                statistics = postItem.statistics,
+                onClick = onStatisticsItemClick,
+            )
         }
     }
 }
@@ -92,7 +103,10 @@ private fun PostHeader(postItem: PostItem) {
 }
 
 @Composable
-private fun PostFooter(postItem: PostItem) {
+private fun Statistics(
+    statistics: List<StatisticItem>,
+    onClick: (StatisticType) -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -102,8 +116,10 @@ private fun PostFooter(postItem: PostItem) {
         Row(Modifier.weight(1f)) {
             IconWithText(
                 iconResId = R.drawable.ic_views,
-                text = postItem.viewsCount.toString(),
-            )
+                text = statistics.getStringCount(StatisticType.VIEWS),
+            ) {
+                onClick(StatisticType.VIEWS)
+            }
         }
         Row(
             Modifier.weight(1f),
@@ -111,23 +127,44 @@ private fun PostFooter(postItem: PostItem) {
         ) {
             IconWithText(
                 iconResId = R.drawable.ic_share,
-                text = postItem.sharesCount.toString(),
+                text = statistics.getStringCount(StatisticType.SHARES),
+                onClick = {
+                    onClick(StatisticType.SHARES)
+                }
             )
             IconWithText(
                 iconResId = R.drawable.ic_comment,
-                text = postItem.commentsCount.toString(),
+                text = statistics.getStringCount(StatisticType.COMMENTS),
+                onClick = {
+                    onClick(StatisticType.COMMENTS)
+                }
             )
             IconWithText(
-                iconResId = if (postItem.liked) R.drawable.ic_like_fill else R.drawable.ic_like_outline,
-                text = postItem.likesCount.toString(),
+                iconResId = R.drawable.ic_like_outline,
+                text = statistics.getStringCount(StatisticType.LIKES),
+                onClick = {
+                    onClick(StatisticType.LIKES)
+                }
             )
         }
     }
 }
 
+private fun List<StatisticItem>.getStringCount(type: StatisticType): String {
+    return find { it.type == type }?.count?.toString()
+        ?: error("Type $type is not present in the list")
+}
+
 @Composable
-private fun IconWithText(iconResId: Int, text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
+private fun IconWithText(
+    iconResId: Int,
+    text: String,
+    onClick: () -> Unit,
+) {
+    Row(
+        modifier = Modifier.clickable { onClick() },
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
         Icon(
             painter = painterResource(id = iconResId),
             contentDescription = null,
@@ -146,7 +183,7 @@ private fun IconWithText(iconResId: Int, text: String) {
 @Preview(showSystemUi = true)
 private fun LightPreview() {
     JetpackComposePlaygroundTheme(darkTheme = false) {
-        PostCard(postItem = PostItem.PREVIEW)
+        PostCard(postItem = PostItem.PREVIEW, onStatisticsItemClick = {})
     }
 }
 
@@ -154,6 +191,6 @@ private fun LightPreview() {
 @Preview(showBackground = true, backgroundColor = 0xFF191919, showSystemUi = true)
 private fun DarkPreview() {
     JetpackComposePlaygroundTheme(darkTheme = true) {
-        PostCard(postItem = PostItem.PREVIEW)
+        PostCard(postItem = PostItem.PREVIEW, onStatisticsItemClick = {})
     }
 }

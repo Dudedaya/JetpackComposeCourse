@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Jetpack Compose Playground</string>
+
+    <!-- Navigation -->
+    <string name="navigation_title_home">Home</string>
+    <string name="navigation_title_favorites">Home</string>
+    <string name="navigation_title_profile">Profile</string>
 </resources>

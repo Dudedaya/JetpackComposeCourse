@@ -1,4 +1,6 @@
-package xyz.dudedayaworks.jetpackcompose.playground
+package xyz.dudedayaworks.jetpackcompose.playground.domain
+
+import xyz.dudedayaworks.jetpackcompose.playground.R
 
 data class PostItem(
     val title: String,
@@ -6,11 +8,7 @@ data class PostItem(
     val message: String,
     val imageResId: Int,
     val avatarResId: Int,
-    val viewsCount: Int,
-    val sharesCount: Int,
-    val commentsCount: Int,
-    val likesCount: Int,
-    val liked: Boolean,
+    val statistics: List<StatisticItem>,
 ) {
     companion object {
         val PREVIEW = PostItem(
@@ -19,11 +17,12 @@ data class PostItem(
             message = "Some kind of post message that will be about 2 lines long. Blah, blah-blah! Blahblahblahblah, blah.",
             imageResId = R.drawable.post_image,
             avatarResId = R.drawable.avatar,
-            viewsCount = 206,
-            sharesCount = 206,
-            commentsCount = 11,
-            likesCount = 491,
-            liked = false,
+            statistics = listOf(
+                StatisticItem(type = StatisticType.VIEWS, count = 206),
+                StatisticItem(type = StatisticType.SHARES, count = 206),
+                StatisticItem(type = StatisticType.COMMENTS, count = 11),
+                StatisticItem(type = StatisticType.LIKES, count = 491),
+            ),
         )
     }
 }
