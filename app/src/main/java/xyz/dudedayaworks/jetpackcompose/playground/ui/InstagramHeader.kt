@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,7 +40,7 @@ import xyz.dudedayaworks.jetpackcompose.playground.R
 
 @Composable
 fun InstagramHeader(viewModel: MainViewModel) {
-    val isFollowed = viewModel.isFollowing.collectAsState()
+    val isFollowed by viewModel.isFollowing.collectAsState()
     Card(
         modifier = Modifier.padding(16.dp),
         shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
@@ -102,7 +103,11 @@ fun InstagramHeader(viewModel: MainViewModel) {
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 4.dp)
             )
-            FollowButton(isFollowed.value) {
+            // since we use isFollowed by delegate - it would unbox to a value here
+            // and recomposition would trigger for both InstagramHeader and FollowButton
+            // when the state changes.
+            // In that case we can pass the state itself
+            FollowButton(isFollowed) {
                 viewModel.toggleFollowing()
             }
             Spacer(modifier = Modifier.height(8.dp))
