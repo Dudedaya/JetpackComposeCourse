@@ -21,6 +21,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,14 +33,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.dudedayaworks.jetpackcompose.playground.R
-import xyz.dudedayaworks.jetpackcompose.playground.ui.theme.JetpackComposePlaygroundTheme
 
 @Composable
-fun InstagramHeader() {
+fun InstagramHeader(viewModel: MainViewModel) {
+    val isFollowed = viewModel.isFollowing.collectAsState()
     Card(
         modifier = Modifier.padding(16.dp),
         shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
@@ -102,22 +102,41 @@ fun InstagramHeader() {
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 4.dp)
             )
-            Button(
-                modifier = Modifier.padding(top = 4.dp),
-                onClick = {},
-                shape = RoundedCornerShape(4.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ),
-            ) {
-                Text(
-                    text = "Follow",
-                    fontWeight = FontWeight.SemiBold,
-                    fontSize = 16.sp,
-                )
+            FollowButton(isFollowed.value) {
+                viewModel.toggleFollowing()
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
+    }
+}
+
+@Composable
+fun FollowButton(
+    isFollowed: Boolean,
+    onClick: () -> Unit,
+) {
+    Button(
+        modifier = Modifier.padding(top = 4.dp),
+        onClick = onClick,
+        shape = RoundedCornerShape(4.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = if (isFollowed) {
+                MaterialTheme.colorScheme.primary.copy(alpha = .5f)
+            } else {
+                MaterialTheme.colorScheme.primary
+            },
+        ),
+    ) {
+        val text = if (isFollowed) {
+            "Unfollow"
+        } else {
+            "Follow"
+        }
+        Text(
+            text = text,
+            fontWeight = FontWeight.SemiBold,
+            fontSize = 16.sp,
+        )
     }
 }
 
@@ -140,21 +159,5 @@ private fun CounterWithText(count: String, text: String) {
             fontFamily = FontFamily.Monospace,
             fontSize = 14.sp,
         )
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewLight() {
-    JetpackComposePlaygroundTheme(darkTheme = false) {
-        InstagramHeader()
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewDark() {
-    JetpackComposePlaygroundTheme(darkTheme = true) {
-        InstagramHeader()
     }
 }
