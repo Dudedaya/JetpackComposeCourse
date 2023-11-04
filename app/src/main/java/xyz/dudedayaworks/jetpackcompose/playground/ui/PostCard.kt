@@ -35,10 +35,10 @@ import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticType
 fun PostCard(
     modifier: Modifier = Modifier,
     postItem: PostItem,
-    onViewsClick: (StatisticItem) -> Unit,
-    onSharesClick: (StatisticItem) -> Unit,
-    onCommentsClick: (StatisticItem) -> Unit,
-    onLikesClick: (StatisticItem) -> Unit,
+    onViewsClick: (PostItem, StatisticItem) -> Unit,
+    onSharesClick: (PostItem, StatisticItem) -> Unit,
+    onCommentsClick: (PostItem, StatisticItem) -> Unit,
+    onLikesClick: (PostItem, StatisticItem) -> Unit,
 ) {
     Card(
         modifier = modifier.wrapContentSize(),
@@ -64,10 +64,10 @@ fun PostCard(
             )
             Statistics(
                 statistics = postItem.statistics,
-                onViewsClick = onViewsClick,
-                onSharesClick = onSharesClick,
-                onCommentsClick = onCommentsClick,
-                onLikesClick = onLikesClick,
+                onViewsClick = { onViewsClick(postItem, it) },
+                onSharesClick = { onSharesClick(postItem, it) },
+                onCommentsClick = { onCommentsClick(postItem, it) },
+                onLikesClick = { onLikesClick(postItem, it) },
             )
         }
     }

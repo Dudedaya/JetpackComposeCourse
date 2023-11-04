@@ -3,6 +3,7 @@ package xyz.dudedayaworks.jetpackcompose.playground.domain
 import xyz.dudedayaworks.jetpackcompose.playground.R
 
 data class PostItem(
+    val id: Int,
     val title: String,
     val createdAt: String,
     val message: String,
@@ -11,7 +12,8 @@ data class PostItem(
     val statistics: List<StatisticItem>,
 ) {
     companion object {
-        val PREVIEW = PostItem(
+        fun preview(id: Int) = PostItem(
+            id = id,
             title = "Title of the post",
             createdAt = "14:00",
             message = "Some kind of post message that will be about 2 lines long. Blah, blah-blah! Blahblahblahblah, blah.",
