@@ -38,7 +38,10 @@ fun MainScreen(viewModel: NewsViewModel) {
                 .padding(paddingValues)
                 .padding(8.dp),
             postItem = postItemState.value,
-            onStatisticsItemClick = { viewModel.onPostStatisticClick(it) },
+            onViewsClick = viewModel::onPostStatisticClick,
+            onSharesClick = viewModel::onPostStatisticClick,
+            onCommentsClick = viewModel::onPostStatisticClick,
+            onLikesClick = viewModel::onPostStatisticClick,
         )
     }
 }

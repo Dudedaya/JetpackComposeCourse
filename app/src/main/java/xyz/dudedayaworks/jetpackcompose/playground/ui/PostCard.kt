@@ -25,19 +25,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.dudedayaworks.jetpackcompose.playground.R
 import xyz.dudedayaworks.jetpackcompose.playground.domain.PostItem
 import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticItem
 import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticType
-import xyz.dudedayaworks.jetpackcompose.playground.ui.theme.JetpackComposePlaygroundTheme
 
 @Composable
 fun PostCard(
     modifier: Modifier = Modifier,
     postItem: PostItem,
-    onStatisticsItemClick: (StatisticType) -> Unit,
+    onViewsClick: (StatisticItem) -> Unit,
+    onSharesClick: (StatisticItem) -> Unit,
+    onCommentsClick: (StatisticItem) -> Unit,
+    onLikesClick: (StatisticItem) -> Unit,
 ) {
     Card(
         modifier = modifier.wrapContentSize(),
@@ -63,7 +64,10 @@ fun PostCard(
             )
             Statistics(
                 statistics = postItem.statistics,
-                onClick = onStatisticsItemClick,
+                onViewsClick = onViewsClick,
+                onSharesClick = onSharesClick,
+                onCommentsClick = onCommentsClick,
+                onLikesClick = onLikesClick,
             )
         }
     }
@@ -105,7 +109,10 @@ private fun PostHeader(postItem: PostItem) {
 @Composable
 private fun Statistics(
     statistics: List<StatisticItem>,
-    onClick: (StatisticType) -> Unit,
+    onViewsClick: (StatisticItem) -> Unit,
+    onSharesClick: (StatisticItem) -> Unit,
+    onCommentsClick: (StatisticItem) -> Unit,
+    onLikesClick: (StatisticItem) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -114,45 +121,49 @@ private fun Statistics(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(Modifier.weight(1f)) {
+            val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
             IconWithText(
                 iconResId = R.drawable.ic_views,
-                text = statistics.getStringCount(StatisticType.VIEWS),
-            ) {
-                onClick(StatisticType.VIEWS)
-            }
+                text = viewsItem.count.toString(),
+                onClick = {
+                    onViewsClick(viewsItem)
+                }
+            )
         }
         Row(
             Modifier.weight(1f),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            val sharesItem = statistics.getItemByType(StatisticType.SHARES)
             IconWithText(
                 iconResId = R.drawable.ic_share,
-                text = statistics.getStringCount(StatisticType.SHARES),
+                text = sharesItem.count.toString(),
                 onClick = {
-                    onClick(StatisticType.SHARES)
+                    onSharesClick(sharesItem)
                 }
             )
+            val commentsItem = statistics.getItemByType(StatisticType.COMMENTS)
             IconWithText(
                 iconResId = R.drawable.ic_comment,
-                text = statistics.getStringCount(StatisticType.COMMENTS),
+                text = commentsItem.count.toString(),
                 onClick = {
-                    onClick(StatisticType.COMMENTS)
+                    onCommentsClick(commentsItem)
                 }
             )
+            val likeItem = statistics.getItemByType(StatisticType.LIKES)
             IconWithText(
                 iconResId = R.drawable.ic_like_outline,
-                text = statistics.getStringCount(StatisticType.LIKES),
+                text = likeItem.count.toString(),
                 onClick = {
-                    onClick(StatisticType.LIKES)
+                    onLikesClick(likeItem)
                 }
             )
         }
     }
 }
 
-private fun List<StatisticItem>.getStringCount(type: StatisticType): String {
-    return find { it.type == type }?.count?.toString()
-        ?: error("Type $type is not present in the list")
+private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticItem {
+    return find { it.type == type } ?: error("Type $type is not present in the list")
 }
 
 @Composable
@@ -176,21 +187,5 @@ private fun IconWithText(
             fontFamily = FontFamily.Monospace,
             color = MaterialTheme.colorScheme.onSecondary,
         )
-    }
-}
-
-@Composable
-@Preview(showSystemUi = true)
-private fun LightPreview() {
-    JetpackComposePlaygroundTheme(darkTheme = false) {
-        PostCard(postItem = PostItem.PREVIEW, onStatisticsItemClick = {})
-    }
-}
-
-@Composable
-@Preview(showBackground = true, backgroundColor = 0xFF191919, showSystemUi = true)
-private fun DarkPreview() {
-    JetpackComposePlaygroundTheme(darkTheme = true) {
-        PostCard(postItem = PostItem.PREVIEW, onStatisticsItemClick = {})
     }
 }
