@@ -10,21 +10,16 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import xyz.dudedayaworks.jetpackcompose.playground.domain.PostItem
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun MainScreen() {
-    val postItemState = remember {
-        mutableStateOf(PostItem.PREVIEW)
-    }
+fun MainScreen(viewModel: NewsViewModel) {
     Scaffold(
         bottomBar = {
             MainBottomBar(
@@ -37,21 +32,13 @@ fun MainScreen() {
             )
         }
     ) { paddingValues ->
+        val postItemState = viewModel.postItem.collectAsState()
         PostCard(
             modifier = Modifier
                 .padding(paddingValues)
                 .padding(8.dp),
             postItem = postItemState.value,
-            onStatisticsItemClick = { statisticType ->
-                val newStatistics = postItemState.value.statistics.map { item ->
-                    if (item.type == statisticType) {
-                        item.copy(count = item.count + 1)
-                    } else {
-                        item
-                    }
-                }
-                postItemState.value = postItemState.value.copy(statistics = newStatistics)
-            },
+            onStatisticsItemClick = { viewModel.onPostStatisticClick(it) },
         )
     }
 }
