@@ -21,8 +21,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,10 +35,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.dudedayaworks.jetpackcompose.playground.R
+import xyz.dudedayaworks.jetpackcompose.playground.domain.InstagramHeaderModel
 
 @Composable
-fun InstagramHeader(viewModel: MainViewModel) {
-    val isFollowed by viewModel.isFollowing.collectAsState()
+fun InstagramHeader(
+    model: InstagramHeaderModel,
+    onClick: (Int) -> Unit,
+) {
+    val isFollowed = model.isFollowed
     Card(
         modifier = Modifier.padding(16.dp),
         shape = RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp),
@@ -94,7 +96,7 @@ fun InstagramHeader(viewModel: MainViewModel) {
                 modifier = Modifier.padding(top = 8.dp)
             )
             Text(
-                text = "#YoursToMake",
+                text = model.title,
                 fontSize = 14.sp,
                 modifier = Modifier.padding(top = 4.dp)
             )
@@ -107,8 +109,8 @@ fun InstagramHeader(viewModel: MainViewModel) {
             // and recomposition would trigger for both InstagramHeader and FollowButton
             // when the state changes.
             // In that case we can pass the state itself
-            FollowButton(isFollowed) {
-                viewModel.toggleFollowing()
+            FollowButton(isFollowed = isFollowed) {
+                onClick(model.id)
             }
             Spacer(modifier = Modifier.height(8.dp))
         }
