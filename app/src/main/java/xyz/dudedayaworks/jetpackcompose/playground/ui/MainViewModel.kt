@@ -8,11 +8,26 @@ import kotlinx.coroutines.launch
 import xyz.dudedayaworks.jetpackcompose.playground.domain.PostItem
 import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticItem
 
-class NewsViewModel : ViewModel() {
+class MainViewModel : ViewModel() {
 
     private val _items = MutableStateFlow(List(5) { PostItem.preview(it) })
     val items: StateFlow<List<PostItem>>
         get() = _items
+
+    private val _selectedNavItem: MutableStateFlow<NavigationItem> =
+        MutableStateFlow(NavigationItem.Home)
+    val selectedNavItem: StateFlow<NavigationItem>
+        get() = _selectedNavItem
+
+    val navigationItems = listOf(
+        NavigationItem.Home,
+        NavigationItem.Favorites,
+        NavigationItem.Profile,
+    )
+
+    fun onNavItemSelected(navigationItem: NavigationItem) {
+        _selectedNavItem.value = navigationItem
+    }
 
     fun onPostStatisticClick(item: PostItem, statisticsItem: StatisticItem) {
         viewModelScope.launch {

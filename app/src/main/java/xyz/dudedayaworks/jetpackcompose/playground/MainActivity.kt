@@ -10,13 +10,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import xyz.dudedayaworks.jetpackcompose.playground.ui.MainScreen
-import xyz.dudedayaworks.jetpackcompose.playground.ui.NewsViewModel
+import xyz.dudedayaworks.jetpackcompose.playground.ui.MainViewModel
 import xyz.dudedayaworks.jetpackcompose.playground.ui.theme.JetpackComposePlaygroundTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel by viewModels<NewsViewModel>()
+        val viewModel by viewModels<MainViewModel>()
         setContent {
             JetpackComposePlaygroundTheme {
                 Surface(
