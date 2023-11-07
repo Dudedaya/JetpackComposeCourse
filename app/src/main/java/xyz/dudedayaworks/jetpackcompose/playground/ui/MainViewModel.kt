@@ -5,16 +5,16 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import xyz.dudedayaworks.jetpackcompose.playground.domain.PostItem
+import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticItem
 
 class MainViewModel : ViewModel() {
 
-    private val _items = MutableStateFlow(List(5) { PostItem.preview(it) })
-    val items: StateFlow<List<PostItem>>
+    private val _items = MutableStateFlow(List(5) { FeedPost.preview(it) })
+    val items: StateFlow<List<FeedPost>>
         get() = _items
 
-    fun onPostStatisticClick(item: PostItem, statisticsItem: StatisticItem) {
+    fun onPostStatisticClick(item: FeedPost, statisticsItem: StatisticItem) {
         viewModelScope.launch {
             val newItems = _items.value.map { postItem ->
                 if (postItem == item) {
@@ -34,7 +34,7 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun onDelete(item: PostItem) {
+    fun onDelete(item: FeedPost) {
         viewModelScope.launch {
             _items.emit(_items.value.filterNot { it.id == item.id })
         }

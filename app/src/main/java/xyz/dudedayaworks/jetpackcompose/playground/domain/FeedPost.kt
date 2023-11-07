@@ -2,7 +2,7 @@ package xyz.dudedayaworks.jetpackcompose.playground.domain
 
 import xyz.dudedayaworks.jetpackcompose.playground.R
 
-data class PostItem(
+data class FeedPost(
     val id: Int,
     val title: String,
     val createdAt: String,
@@ -12,7 +12,7 @@ data class PostItem(
     val statistics: List<StatisticItem>,
 ) {
     companion object {
-        fun preview(id: Int) = PostItem(
+        fun preview(id: Int) = FeedPost(
             id = id,
             title = "Title of the post",
             createdAt = "14:00",

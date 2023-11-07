@@ -27,18 +27,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import xyz.dudedayaworks.jetpackcompose.playground.R
-import xyz.dudedayaworks.jetpackcompose.playground.domain.PostItem
+import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticItem
 import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticType
 
 @Composable
 fun PostCard(
     modifier: Modifier = Modifier,
-    postItem: PostItem,
-    onViewsClick: (PostItem, StatisticItem) -> Unit,
-    onSharesClick: (PostItem, StatisticItem) -> Unit,
-    onCommentsClick: (PostItem, StatisticItem) -> Unit,
-    onLikesClick: (PostItem, StatisticItem) -> Unit,
+    postItem: FeedPost,
+    onViewsClick: (FeedPost, StatisticItem) -> Unit,
+    onSharesClick: (FeedPost, StatisticItem) -> Unit,
+    onCommentsClick: (FeedPost, StatisticItem) -> Unit,
+    onLikesClick: (FeedPost, StatisticItem) -> Unit,
 ) {
     Card(
         modifier = modifier.wrapContentSize(),
@@ -74,7 +74,7 @@ fun PostCard(
 }
 
 @Composable
-private fun PostHeader(postItem: PostItem) {
+private fun PostHeader(postItem: FeedPost) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically

@@ -18,7 +18,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.AppNavGraph
@@ -83,7 +85,9 @@ private fun MainBottomBar(
     navigationItems: List<NavigationItem>,
     onNavItemSelected: (NavigationItem) -> Unit,
 ) {
-    NavigationBar {
+    NavigationBar(
+        modifier = Modifier.shadow(8.dp)
+    ) {
         navigationItems.forEach { item ->
             NavigationBarItem(
                 selected = currentRoute == item.screen.route,
