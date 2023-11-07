@@ -21,17 +21,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.AppNavGraph
-import xyz.dudedayaworks.jetpackcompose.playground.navigation.Screen
+import xyz.dudedayaworks.jetpackcompose.playground.navigation.rememberNavigationState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
-    val navHostController = rememberNavController()
+    val navigationState = rememberNavigationState()
     Scaffold(
         bottomBar = {
-            val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+            val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
             val currentRoute = navBackStackEntry?.destination?.route
             val navigationItems = listOf(
                 NavigationItem.Home,
@@ -42,19 +41,13 @@ fun MainScreen(viewModel: MainViewModel) {
                 currentRoute = currentRoute,
                 navigationItems = navigationItems,
                 onNavItemSelected = {
-                    navHostController.navigate(it.screen.route) {
-                        launchSingleTop = true
-                        popUpTo(Screen.NewsFeed.route) {
-                            saveState = true
-                        }
-                        restoreState = true
-                    }
+                    navigationState.navigateTo(it.screen.route)
                 },
             )
         }
     ) { paddingValues ->
         AppNavGraph(
-            navHostController = navHostController,
+            navHostController = navigationState.navHostController,
             homeScreenContent = {
                 HomeScreen(
                     viewModel = viewModel,
