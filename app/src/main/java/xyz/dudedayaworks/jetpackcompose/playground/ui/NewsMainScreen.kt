@@ -9,41 +9,55 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import xyz.dudedayaworks.jetpackcompose.playground.navigation.AppNavGraph
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(viewModel: MainViewModel) {
-    val selectedNavItem by viewModel.selectedNavItem.collectAsState()
+    val navHostController = rememberNavController()
     Scaffold(
         bottomBar = {
+            val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+            val currentRoute = navBackStackEntry?.destination?.route
+            val navigationItems = listOf(
+                NavigationItem.Home,
+                NavigationItem.Favorites,
+                NavigationItem.Profile,
+            )
             MainBottomBar(
-                selectedNavItem = selectedNavItem,
-                navigationItems = viewModel.navigationItems,
-                onNavItemSelected = viewModel::onNavItemSelected,
+                currentRoute = currentRoute,
+                navigationItems = navigationItems,
+                onNavItemSelected = { navHostController.navigate(it.screen.route) },
             )
         }
     ) { paddingValues ->
-        when (selectedNavItem) {
-            NavigationItem.Favorites -> Text(text = "Favorites")
-            NavigationItem.Home -> HomeScreen(viewModel = viewModel, paddingValues = paddingValues)
-            NavigationItem.Profile -> Text(text = "Profile")
-        }
+        AppNavGraph(
+            navHostController = navHostController,
+            homeScreenContent = {
+                HomeScreen(
+                    viewModel = viewModel,
+                    paddingValues = paddingValues,
+                )
+            },
+            favoriteScreenContent = { Text(text = "Favorites") },
+            profileScreenContent = { Text(text = "Profile") })
     }
 }
 
 @Composable
 private fun MainBottomBar(
-    selectedNavItem: NavigationItem,
+    currentRoute: String?,
     navigationItems: List<NavigationItem>,
     onNavItemSelected: (NavigationItem) -> Unit,
 ) {
     NavigationBar {
         navigationItems.forEach { item ->
             NavigationBarItem(
-                selected = selectedNavItem == item,
+                selected = currentRoute == item.screen.route,
                 onClick = { onNavItemSelected(item) },
                 icon = {
                     Icon(

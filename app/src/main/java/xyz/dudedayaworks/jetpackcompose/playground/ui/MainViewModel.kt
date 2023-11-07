@@ -14,21 +14,6 @@ class MainViewModel : ViewModel() {
     val items: StateFlow<List<PostItem>>
         get() = _items
 
-    private val _selectedNavItem: MutableStateFlow<NavigationItem> =
-        MutableStateFlow(NavigationItem.Home)
-    val selectedNavItem: StateFlow<NavigationItem>
-        get() = _selectedNavItem
-
-    val navigationItems = listOf(
-        NavigationItem.Home,
-        NavigationItem.Favorites,
-        NavigationItem.Profile,
-    )
-
-    fun onNavItemSelected(navigationItem: NavigationItem) {
-        _selectedNavItem.value = navigationItem
-    }
-
     fun onPostStatisticClick(item: PostItem, statisticsItem: StatisticItem) {
         viewModelScope.launch {
             val newItems = _items.value.map { postItem ->
