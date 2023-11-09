@@ -27,8 +27,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.AppNavGraph
+import xyz.dudedayaworks.jetpackcompose.playground.navigation.Screen
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.rememberNavigationState
 import xyz.dudedayaworks.jetpackcompose.playground.ui.comments.CommentsScreen
+import xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed.NewsFeedScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,27 +57,28 @@ fun MainScreen() {
     ) { paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            homeScreenContent = {
-                val feedPost = commentsToPost.value
-                if (feedPost == null) {
-                    HomeScreen(
-                        paddingValues = paddingValues,
-                        onCommentsClick = {
-                            commentsToPost.value = it
-                        }
-                    )
-                } else {
-                    CommentsScreen(
-                        paddingValues = paddingValues,
-                        feedPost = feedPost,
-                        onNavigationBack = {
-                            commentsToPost.value = null
-                        }
-                    )
-                }
+            newsFeedScreenContent = {
+                NewsFeedScreen(
+                    paddingValues = paddingValues,
+                    onCommentsClick = {
+                        commentsToPost.value = it
+                        navigationState.navigateTo(Screen.Comments.route)
+                    }
+                )
+            },
+            commentsScreenContent = {
+                CommentsScreen(
+                    paddingValues = paddingValues,
+                    feedPost = commentsToPost.value!!,
+                    onNavigationBack = {
+                        commentsToPost.value = null
+                        navigationState.navigateTo(Screen.NewsFeed.route)
+                    }
+                )
             },
             favoriteScreenContent = { StatefulText(text = "Favorites") },
-            profileScreenContent = { StatefulText(text = "Profile") })
+            profileScreenContent = { StatefulText(text = "Profile") },
+        )
     }
 }
 

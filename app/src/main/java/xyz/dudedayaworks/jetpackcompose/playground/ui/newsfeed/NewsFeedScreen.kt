@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.ui
+package xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -6,12 +6,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
-import xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed.NewsFeedScreenState
-import xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed.NewsFeedViewModel
-import xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed.PostsScreen
+import xyz.dudedayaworks.jetpackcompose.playground.ui.LoadingScreen
 
 @Composable
-fun HomeScreen(
+fun NewsFeedScreen(
     paddingValues: PaddingValues,
     onCommentsClick: (FeedPost) -> Unit,
 ) {
