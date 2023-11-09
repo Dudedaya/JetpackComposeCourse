@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.ui
+package xyz.dudedayaworks.jetpackcompose.playground.ui.comments
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -32,32 +33,46 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 import xyz.dudedayaworks.jetpackcompose.playground.domain.PostComment
+import xyz.dudedayaworks.jetpackcompose.playground.ui.LoadingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
     paddingValues: PaddingValues,
     feedPost: FeedPost,
-    postComments: List<PostComment>,
     onNavigationBack: () -> Unit,
 ) {
+    val viewModel = viewModel<CommentsViewModel>()
     BackHandler {
         onNavigationBack()
     }
+
     Scaffold(
         modifier = Modifier.padding(paddingValues),
-        topBar = { AppBar(feedPost.id, onNavigationBack) },
+        topBar = {
+            AppBar(
+                feedPostId = feedPost.id,
+                onNavigationBack = onNavigationBack
+            )
+        },
     ) { appBarPadding ->
-        LazyColumn(
-            modifier = Modifier.padding(appBarPadding),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-        ) {
-            items(postComments) {
-                PostCommentItem(it)
-            }
+        val screenState = viewModel.screenState.collectAsState()
+        when (val currentState = screenState.value) {
+            CommentsScreenState.Initial -> viewModel.loadComments(feedPost)
+            CommentsScreenState.Loading -> LoadingScreen(paddingValues = paddingValues)
+            is CommentsScreenState.Comments ->
+                LazyColumn(
+                    modifier = Modifier.padding(appBarPadding),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    items(currentState.comments) {
+                        PostCommentItem(it)
+                    }
+                }
         }
     }
 }

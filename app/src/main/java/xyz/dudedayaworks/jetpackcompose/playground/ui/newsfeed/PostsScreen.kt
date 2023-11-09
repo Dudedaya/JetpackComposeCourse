@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.ui
+package xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
