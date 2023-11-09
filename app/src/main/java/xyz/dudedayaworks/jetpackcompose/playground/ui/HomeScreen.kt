@@ -1,48 +1,53 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material.DismissDirection
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SwipeToDismiss
-import androidx.compose.material.rememberDismissState
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(viewModel: MainViewModel, paddingValues: PaddingValues) {
-    val itemsState = viewModel.items.collectAsState()
-    LazyColumn(
-        modifier = Modifier.padding(paddingValues),
-        contentPadding = PaddingValues(vertical = 16.dp, horizontal = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+    val screenState by viewModel.screenState.collectAsState()
+
+    when (val state = screenState) {
+        is HomeScreenState.Comments ->
+            CommentsScreen(
+                paddingValues = paddingValues,
+                feedPost = state.feedPost,
+                postComments = state.comments,
+                onNavigationBack = viewModel::onReturnToPosts,
+            )
+
+        is HomeScreenState.Posts ->
+            PostsScreen(
+                paddingValues,
+                posts = state.posts,
+                onDelete = viewModel::onDeletePost,
+                onPostStatisticClick = viewModel::onPostStatisticClick,
+            )
+
+        HomeScreenState.Loading ->
+            LoadingScreen(paddingValues)
+    }
+}
+
+@Composable
+fun LoadingScreen(paddingValues: PaddingValues) {
+    Box(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center,
     ) {
-        items(itemsState.value, key = { it.id }) {
-            val dismissState = rememberDismissState()
-            if (dismissState.isDismissed(DismissDirection.EndToStart)) {
-                viewModel.onDelete(it)
-            }
-            SwipeToDismiss(
-                modifier = Modifier.animateItemPlacement(),
-                state = dismissState,
-                background = {},
-                directions = setOf(DismissDirection.EndToStart),
-            ) {
-                PostCard(
-                    postItem = it,
-                    onViewsClick = viewModel::onPostStatisticClick,
-                    onSharesClick = viewModel::onPostStatisticClick,
-                    onCommentsClick = viewModel::onPostStatisticClick,
-                    onLikesClick = viewModel::onPostStatisticClick,
-                )
-            }
-        }
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.onPrimary,
+        )
     }
 }

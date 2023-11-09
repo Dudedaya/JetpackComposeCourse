@@ -37,13 +37,14 @@ import xyz.dudedayaworks.jetpackcompose.playground.domain.PostComment
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
+    paddingValues: PaddingValues,
     feedPost: FeedPost,
     postComments: List<PostComment>,
-    paddingValues: PaddingValues,
+    onNavigationBack: () -> Unit,
 ) {
     Scaffold(
         modifier = Modifier.padding(paddingValues),
-        topBar = { AppBar(feedPost.id) },
+        topBar = { AppBar(feedPost.id, onNavigationBack) },
     ) { appBarPadding ->
         LazyColumn(
             modifier = Modifier.padding(appBarPadding),
@@ -59,12 +60,12 @@ fun CommentsScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun AppBar(feedPostId: Int) {
+private fun AppBar(feedPostId: Int, onNavigationBack: () -> Unit) {
     TopAppBar(
         modifier = Modifier.shadow(8.dp),
         title = { Text(text = "Comments for FeedPostId: $feedPostId") },
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = onNavigationBack) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)
             }
         },
