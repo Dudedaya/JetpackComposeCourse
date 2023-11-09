@@ -24,10 +24,11 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.AppNavGraph
-import xyz.dudedayaworks.jetpackcompose.playground.navigation.Screen
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.rememberNavigationState
 import xyz.dudedayaworks.jetpackcompose.playground.ui.comments.CommentsScreen
 import xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed.NewsFeedScreen
@@ -40,14 +41,13 @@ fun MainScreen() {
     Scaffold(
         bottomBar = {
             val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
-            val currentRoute = navBackStackEntry?.destination?.route
             val navigationItems = listOf(
                 NavigationItem.Home,
                 NavigationItem.Favorites,
                 NavigationItem.Profile,
             )
             MainBottomBar(
-                currentRoute = currentRoute,
+                navBackStackEntry = navBackStackEntry,
                 navigationItems = navigationItems,
                 onNavItemSelected = {
                     navigationState.navigateTo(it.screen.route)
@@ -62,7 +62,7 @@ fun MainScreen() {
                     paddingValues = paddingValues,
                     onCommentsClick = {
                         commentsToPost.value = it
-                        navigationState.navigateTo(Screen.Comments.route)
+                        navigationState.navigateToComments()
                     }
                 )
             },
@@ -71,8 +71,7 @@ fun MainScreen() {
                     paddingValues = paddingValues,
                     feedPost = commentsToPost.value!!,
                     onNavigationBack = {
-                        commentsToPost.value = null
-                        navigationState.navigateTo(Screen.NewsFeed.route)
+                        navigationState.navHostController.popBackStack()
                     }
                 )
             },
@@ -102,7 +101,7 @@ private fun StatefulText(text: String) {
 
 @Composable
 private fun MainBottomBar(
-    currentRoute: String?,
+    navBackStackEntry: NavBackStackEntry?,
     navigationItems: List<NavigationItem>,
     onNavItemSelected: (NavigationItem) -> Unit,
 ) {
@@ -110,9 +109,17 @@ private fun MainBottomBar(
         modifier = Modifier.shadow(8.dp)
     ) {
         navigationItems.forEach { item ->
+            val selected = navBackStackEntry?.destination?.hierarchy?.any {
+                it.route == item.screen.route
+            } ?: false
+
             NavigationBarItem(
-                selected = currentRoute == item.screen.route,
-                onClick = { onNavItemSelected(item) },
+                selected = selected,
+                onClick = {
+                    if (!selected) {
+                        onNavItemSelected(item)
+                    }
+                },
                 icon = {
                     Icon(
                         imageVector = item.icon,

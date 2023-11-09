@@ -7,7 +7,7 @@ class PlaygroundApp : Application() {
     override fun onCreate() {
         super.onCreate()
         Thread.setDefaultUncaughtExceptionHandler { t, e ->
-            Log.e("PlaygroundApp", "Fatal error at thread: $t: ${e.message}", e)
+            Log.e("PlaygroundApp", "FATAL EXCEPTION: $t\n${e::class.java}: ${e.message}", e)
             throw e
         }
     }
