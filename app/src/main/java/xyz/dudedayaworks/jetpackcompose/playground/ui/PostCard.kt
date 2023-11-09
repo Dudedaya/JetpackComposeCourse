@@ -37,7 +37,7 @@ fun PostCard(
     postItem: FeedPost,
     onViewsClick: (FeedPost, StatisticItem) -> Unit,
     onSharesClick: (FeedPost, StatisticItem) -> Unit,
-    onCommentsClick: (FeedPost, StatisticItem) -> Unit,
+    onCommentsClick: (FeedPost) -> Unit,
     onLikesClick: (FeedPost, StatisticItem) -> Unit,
 ) {
     Card(
@@ -66,7 +66,7 @@ fun PostCard(
                 statistics = postItem.statistics,
                 onViewsClick = { onViewsClick(postItem, it) },
                 onSharesClick = { onSharesClick(postItem, it) },
-                onCommentsClick = { onCommentsClick(postItem, it) },
+                onCommentsClick = { onCommentsClick(postItem) },
                 onLikesClick = { onLikesClick(postItem, it) },
             )
         }
@@ -111,7 +111,7 @@ private fun Statistics(
     statistics: List<StatisticItem>,
     onViewsClick: (StatisticItem) -> Unit,
     onSharesClick: (StatisticItem) -> Unit,
-    onCommentsClick: (StatisticItem) -> Unit,
+    onCommentsClick: () -> Unit,
     onLikesClick: (StatisticItem) -> Unit,
 ) {
     Row(
@@ -146,9 +146,7 @@ private fun Statistics(
             IconWithText(
                 iconResId = R.drawable.ic_comment,
                 text = commentsItem.count.toString(),
-                onClick = {
-                    onCommentsClick(commentsItem)
-                }
+                onClick = onCommentsClick
             )
             val likeItem = statistics.getItemByType(StatisticType.LIKES)
             IconWithText(

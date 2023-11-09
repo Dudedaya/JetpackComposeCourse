@@ -1,5 +1,6 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,6 +43,9 @@ fun CommentsScreen(
     postComments: List<PostComment>,
     onNavigationBack: () -> Unit,
 ) {
+    BackHandler {
+        onNavigationBack()
+    }
     Scaffold(
         modifier = Modifier.padding(paddingValues),
         topBar = { AppBar(feedPost.id, onNavigationBack) },

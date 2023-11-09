@@ -31,6 +31,7 @@ fun HomeScreen(viewModel: MainViewModel, paddingValues: PaddingValues) {
                 posts = state.posts,
                 onDelete = viewModel::onDeletePost,
                 onPostStatisticClick = viewModel::onPostStatisticClick,
+                onCommentsClick = viewModel::onCommentsClick,
             )
 
         HomeScreenState.Loading ->

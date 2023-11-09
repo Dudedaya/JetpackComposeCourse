@@ -23,6 +23,7 @@ fun PostsScreen(
     posts: List<FeedPost>,
     onDelete: (FeedPost) -> Unit,
     onPostStatisticClick: (FeedPost, StatisticItem) -> Unit,
+    onCommentsClick: (FeedPost) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier.padding(paddingValues),
@@ -44,7 +45,7 @@ fun PostsScreen(
                     postItem = it,
                     onViewsClick = onPostStatisticClick,
                     onSharesClick = onPostStatisticClick,
-                    onCommentsClick = onPostStatisticClick,
+                    onCommentsClick = onCommentsClick,
                     onLikesClick = onPostStatisticClick,
                 )
             }
