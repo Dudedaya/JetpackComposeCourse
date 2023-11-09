@@ -9,12 +9,18 @@ import kotlinx.coroutines.launch
 import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 import xyz.dudedayaworks.jetpackcompose.playground.domain.PostComment
 
-class CommentsViewModel : ViewModel() {
+class CommentsViewModel(
+    feedPost: FeedPost,
+) : ViewModel() {
 
-    private val _screenState = MutableStateFlow<CommentsScreenState>(CommentsScreenState.Initial)
+    private val _screenState = MutableStateFlow<CommentsScreenState>(CommentsScreenState.Loading)
     val screenState: StateFlow<CommentsScreenState> get() = _screenState
 
-    fun loadComments(feedPost: FeedPost) {
+    init {
+        loadComments(feedPost)
+    }
+
+    private fun loadComments(feedPost: FeedPost) {
         viewModelScope.launch {
             _screenState.emit(CommentsScreenState.Loading)
             delay(1000L)

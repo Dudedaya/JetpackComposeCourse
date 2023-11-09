@@ -45,7 +45,7 @@ fun CommentsScreen(
     feedPost: FeedPost,
     onNavigationBack: () -> Unit,
 ) {
-    val viewModel = viewModel<CommentsViewModel>()
+    val viewModel = viewModel<CommentsViewModel>(factory = CommentsViewModelFactory(feedPost))
     BackHandler {
         onNavigationBack()
     }
@@ -61,7 +61,6 @@ fun CommentsScreen(
     ) { appBarPadding ->
         val screenState = viewModel.screenState.collectAsState()
         when (val currentState = screenState.value) {
-            CommentsScreenState.Initial -> viewModel.loadComments(feedPost)
             CommentsScreenState.Loading -> LoadingScreen(paddingValues = paddingValues)
             is CommentsScreenState.Comments ->
                 LazyColumn(
