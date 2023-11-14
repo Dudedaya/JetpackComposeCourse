@@ -55,6 +55,7 @@ fun CommentsScreen(
         topBar = {
             AppBar(
                 feedPostId = feedPost.id,
+                feedPostTitle = feedPost.title,
                 onNavigationBack = onNavigationBack
             )
         },
@@ -78,10 +79,10 @@ fun CommentsScreen(
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-private fun AppBar(feedPostId: Int, onNavigationBack: () -> Unit) {
+private fun AppBar(feedPostId: Int, feedPostTitle: String, onNavigationBack: () -> Unit) {
     TopAppBar(
         modifier = Modifier.shadow(8.dp),
-        title = { Text(text = "Comments for FeedPostId: $feedPostId") },
+        title = { Text(text = "$feedPostTitle: $feedPostId") },
         navigationIcon = {
             IconButton(onClick = onNavigationBack) {
                 Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null)

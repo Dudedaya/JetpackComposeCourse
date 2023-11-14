@@ -2,7 +2,9 @@ package xyz.dudedayaworks.jetpackcompose.playground.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 
@@ -14,9 +16,16 @@ fun NavGraphBuilder.homeScreenNavGraph(
         composable(route = Screen.NewsFeed.route) {
             newsFeedScreenContent()
         }
-        composable(route = Screen.Comments.route) {
+        composable(
+            route = Screen.Comments.route,
+            arguments = listOf(
+                navArgument(Screen.KEY_FEED_POST_ID) { type = NavType.IntType },
+                navArgument(Screen.KEY_FEED_POST_TITLE) { type = NavType.StringType },
+            )
+        ) {
             val feedPostId = it.arguments?.getInt(Screen.KEY_FEED_POST_ID) ?: -1
-            commentsScreenContent(FeedPost.preview(feedPostId))
+            val feedPostTitle = it.arguments?.getString(Screen.KEY_FEED_POST_TITLE) ?: "No title"
+            commentsScreenContent(FeedPost.preview(feedPostId).copy(title = feedPostTitle))
         }
     }
 }
