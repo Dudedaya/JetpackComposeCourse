@@ -1,7 +1,13 @@
 package xyz.dudedayaworks.jetpackcompose.playground.domain
 
+import android.os.Bundle
+import android.os.Parcelable
+import androidx.navigation.NavType
+import com.google.gson.Gson
+import kotlinx.parcelize.Parcelize
 import xyz.dudedayaworks.jetpackcompose.playground.R
 
+@Parcelize
 data class FeedPost(
     val id: Int,
     val title: String,
@@ -10,7 +16,7 @@ data class FeedPost(
     val imageResId: Int,
     val avatarResId: Int,
     val statistics: List<StatisticItem>,
-) {
+) : Parcelable {
     companion object {
         fun preview(id: Int) = FeedPost(
             id = id,
@@ -26,5 +32,20 @@ data class FeedPost(
                 StatisticItem(type = StatisticType.LIKES, count = 491),
             ),
         )
+
+        @Suppress("DEPRECATION")
+        val NavigationType: NavType<FeedPost> = object : NavType<FeedPost>(false) {
+            override fun get(bundle: Bundle, key: String): FeedPost? {
+                return bundle.getParcelable(key)
+            }
+
+            override fun parseValue(value: String): FeedPost {
+                return Gson().fromJson(value, FeedPost::class.java)
+            }
+
+            override fun put(bundle: Bundle, key: String, value: FeedPost) {
+                bundle.putParcelable(key, value)
+            }
+        }
     }
 }
