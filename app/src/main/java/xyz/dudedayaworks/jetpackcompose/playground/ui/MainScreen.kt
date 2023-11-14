@@ -12,10 +12,8 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -27,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.AppNavGraph
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.rememberNavigationState
 import xyz.dudedayaworks.jetpackcompose.playground.ui.comments.CommentsScreen
@@ -37,7 +34,6 @@ import xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed.NewsFeedScreen
 @Composable
 fun MainScreen() {
     val navigationState = rememberNavigationState()
-    val commentsToPost: MutableState<FeedPost?> = remember { mutableStateOf(null) }
     Scaffold(
         bottomBar = {
             val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
@@ -61,15 +57,14 @@ fun MainScreen() {
                 NewsFeedScreen(
                     paddingValues = paddingValues,
                     onCommentsClick = {
-                        commentsToPost.value = it
-                        navigationState.navigateToComments()
+                        navigationState.navigateToComments(it)
                     }
                 )
             },
-            commentsScreenContent = {
+            commentsScreenContent = { feedPost ->
                 CommentsScreen(
                     paddingValues = paddingValues,
-                    feedPost = commentsToPost.value!!,
+                    feedPost = feedPost,
                     onNavigationBack = {
                         navigationState.navHostController.popBackStack()
                     }
