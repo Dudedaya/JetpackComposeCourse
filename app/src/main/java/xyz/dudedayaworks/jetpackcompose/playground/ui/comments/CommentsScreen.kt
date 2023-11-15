@@ -1,7 +1,6 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui.comments
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,13 +28,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
-import xyz.dudedayaworks.jetpackcompose.playground.domain.models.PostComment
+import coil.compose.AsyncImage
+import xyz.dudedayaworks.jetpackcompose.playground.domain.model.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.model.PostComment
 import xyz.dudedayaworks.jetpackcompose.playground.ui.common.LoadingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,11 +99,11 @@ private fun AppBar(feedPostId: Int, feedPostTitle: String, onNavigationBack: () 
 @Composable
 private fun PostCommentItem(postComment: PostComment = PostComment.preview(0)) {
     Row(modifier = Modifier.fillMaxWidth()) {
-        Image(
+        AsyncImage(
             modifier = Modifier
                 .size(36.dp)
                 .clip(CircleShape),
-            painter = painterResource(id = postComment.avatarResId),
+            model = postComment.avatarUrl,
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -118,6 +118,7 @@ private fun PostCommentItem(postComment: PostComment = PostComment.preview(0)) {
             )
             Text(
                 modifier = Modifier.padding(vertical = 4.dp),
+                textAlign = TextAlign.Justify,
                 text = postComment.message,
                 lineHeight = 18.sp,
                 fontSize = 14.sp,

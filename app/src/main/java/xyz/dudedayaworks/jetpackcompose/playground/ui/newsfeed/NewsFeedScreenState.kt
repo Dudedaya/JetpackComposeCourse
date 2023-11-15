@@ -1,6 +1,6 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed
 
-import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.model.FeedPost
 
 sealed class NewsFeedScreenState {
     object Loading : NewsFeedScreenState()

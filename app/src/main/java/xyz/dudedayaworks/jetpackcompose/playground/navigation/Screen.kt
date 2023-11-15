@@ -2,7 +2,7 @@ package xyz.dudedayaworks.jetpackcompose.playground.navigation
 
 import android.net.Uri
 import com.google.gson.Gson
-import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.model.FeedPost
 
 sealed class Screen(
     val route: String,

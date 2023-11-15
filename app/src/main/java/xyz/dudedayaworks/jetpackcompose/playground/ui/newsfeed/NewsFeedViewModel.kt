@@ -2,25 +2,31 @@ package xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
-import xyz.dudedayaworks.jetpackcompose.playground.domain.models.StatisticItem
+import xyz.dudedayaworks.jetpackcompose.playground.PlaygroundApp
+import xyz.dudedayaworks.jetpackcompose.playground.domain.model.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.model.StatisticItem
+import xyz.dudedayaworks.jetpackcompose.playground.domain.post.PostRepository
 
-class NewsFeedViewModel : ViewModel() {
+class NewsFeedViewModel(
+    postRepository: PostRepository = PlaygroundApp.postRepository,
+) : ViewModel() {
 
-    private val initialState: NewsFeedScreenState =
-        NewsFeedScreenState.Posts(List(5) { FeedPost.preview(it) })
     private val _screenState = MutableStateFlow<NewsFeedScreenState>(NewsFeedScreenState.Loading)
     val screenState: StateFlow<NewsFeedScreenState>
         get() = _screenState
 
     init {
         viewModelScope.launch {
-            delay(1000L)
-            _screenState.emit(initialState)
+            postRepository.getPosts()
+                .onSuccess {
+                    _screenState.emit(NewsFeedScreenState.Posts(it))
+                }
+                .onFailure {
+                    TODO("Not yet implemented")
+                }
         }
     }
 
