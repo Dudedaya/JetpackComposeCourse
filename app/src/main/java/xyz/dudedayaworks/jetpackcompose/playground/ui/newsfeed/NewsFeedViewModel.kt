@@ -19,7 +19,7 @@ class NewsFeedViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            delay(2000L)
+            delay(1000L)
             _screenState.emit(initialState)
         }
     }

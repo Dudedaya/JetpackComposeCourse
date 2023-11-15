@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import xyz.dudedayaworks.jetpackcompose.playground.data.auth.AuthRepository
+import xyz.dudedayaworks.jetpackcompose.playground.data.auth.AuthRepositoryImpl
 import xyz.dudedayaworks.jetpackcompose.playground.data.auth.NotAuthenticated
 
 class LoginViewModel(
@@ -48,7 +49,8 @@ class LoginViewModel(
 
     companion object {
         @Suppress("UNCHECKED_CAST")
-        fun factory(authRepository: AuthRepository): ViewModelProvider.Factory {
+        // TODO LESSON_7.1_MOCK_AUTH 15.11.2023 18:16: DI
+        fun factory(authRepository: AuthRepository = AuthRepositoryImpl()): ViewModelProvider.Factory {
             return object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return LoginViewModel(authRepository) as T

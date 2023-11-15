@@ -1,6 +1,5 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui.auth
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,15 +34,15 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
-//@Preview(showSystemUi = true)
 @Composable
-fun AuthScreen(
-    viewModel: LoginViewModel,
+fun LoginScreen(
+    onLoggedIn: () -> Unit,
 ) {
+    val viewModel =
+        viewModel<LoginViewModel>(factory = LoginViewModel.factory())
     val state by viewModel.state.collectAsState()
-    Log.d("TEST", "state=$state")
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -78,7 +77,7 @@ fun AuthScreen(
             }
 
             LoginScreenState.Authorized -> {
-                // TODO LESSON_7.1_MOCK_AUTH 14.11.2023 22:19: Navigate to main screen
+                onLoggedIn()
             }
 
             LoginScreenState.Loading -> {
