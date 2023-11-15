@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.ui
+package xyz.dudedayaworks.jetpackcompose.playground.ui.common
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Favorite

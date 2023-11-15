@@ -1,17 +1,16 @@
-package xyz.dudedayaworks.jetpackcompose.playground.ui.auth
+package xyz.dudedayaworks.jetpackcompose.playground.ui.login
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import xyz.dudedayaworks.jetpackcompose.playground.data.auth.AuthRepository
-import xyz.dudedayaworks.jetpackcompose.playground.data.auth.AuthRepositoryImpl
-import xyz.dudedayaworks.jetpackcompose.playground.data.auth.NotAuthenticated
+import xyz.dudedayaworks.jetpackcompose.playground.PlaygroundApp
+import xyz.dudedayaworks.jetpackcompose.playground.domain.auth.AuthRepository
+import xyz.dudedayaworks.jetpackcompose.playground.domain.auth.NotAuthenticated
 
 class LoginViewModel(
-    private val authRepository: AuthRepository,
+    private val authRepository: AuthRepository = PlaygroundApp.authRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<LoginScreenState>(LoginScreenState.Loading)
@@ -22,11 +21,11 @@ class LoginViewModel(
         viewModelScope.launch {
             authRepository.getToken()
                 .onSuccess {
-                    _state.emit(LoginScreenState.Authorized)
+                    _state.emit(LoginScreenState.Authenticated)
                 }
                 .onFailure {
                     if (it == NotAuthenticated) {
-                        _state.emit(LoginScreenState.NotAuthorized)
+                        _state.emit(LoginScreenState.NotAuthenticated)
                     } else {
                         _state.emit(LoginScreenState.AuthError(it.message ?: "Unknown error"))
                     }
@@ -39,23 +38,11 @@ class LoginViewModel(
             _state.emit(LoginScreenState.Loading)
             authRepository.authenticate(username, password)
                 .onSuccess {
-                    _state.emit(LoginScreenState.Authorized)
+                    _state.emit(LoginScreenState.Authenticated)
                 }
                 .onFailure {
                     _state.emit(LoginScreenState.AuthError(it.message ?: "Unknown error"))
                 }
-        }
-    }
-
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        // TODO LESSON_7.1_MOCK_AUTH 15.11.2023 18:16: DI
-        fun factory(authRepository: AuthRepository = AuthRepositoryImpl()): ViewModelProvider.Factory {
-            return object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return LoginViewModel(authRepository) as T
-                }
-            }
         }
     }
 }

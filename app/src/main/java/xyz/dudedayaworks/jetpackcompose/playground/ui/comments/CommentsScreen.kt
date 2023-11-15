@@ -34,9 +34,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
-import xyz.dudedayaworks.jetpackcompose.playground.domain.PostComment
-import xyz.dudedayaworks.jetpackcompose.playground.ui.LoadingScreen
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.PostComment
+import xyz.dudedayaworks.jetpackcompose.playground.ui.common.LoadingScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

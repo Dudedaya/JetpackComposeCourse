@@ -27,9 +27,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import xyz.dudedayaworks.jetpackcompose.playground.R
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
-import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticItem
-import xyz.dudedayaworks.jetpackcompose.playground.domain.StatisticType
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.StatisticItem
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.StatisticType
 
 @Composable
 fun PostCard(

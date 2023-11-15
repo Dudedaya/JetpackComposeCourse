@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.ui
+package xyz.dudedayaworks.jetpackcompose.playground.ui.main
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -26,10 +26,9 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.compose.currentBackStackEntryAsState
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.AppNavGraph
-import xyz.dudedayaworks.jetpackcompose.playground.navigation.Screen
 import xyz.dudedayaworks.jetpackcompose.playground.navigation.rememberNavigationState
-import xyz.dudedayaworks.jetpackcompose.playground.ui.auth.LoginScreen
 import xyz.dudedayaworks.jetpackcompose.playground.ui.comments.CommentsScreen
+import xyz.dudedayaworks.jetpackcompose.playground.ui.common.NavigationItem
 import xyz.dudedayaworks.jetpackcompose.playground.ui.newsfeed.NewsFeedScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,31 +38,22 @@ fun MainScreen() {
     Scaffold(
         bottomBar = {
             val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
-            if (navBackStackEntry?.destination?.route != Screen.Login.route) {
-                val navigationItems = listOf(
-                    NavigationItem.Home,
-                    NavigationItem.Favorites,
-                    NavigationItem.Profile,
-                )
-                MainBottomBar(
-                    navBackStackEntry = navBackStackEntry,
-                    navigationItems = navigationItems,
-                    onNavItemSelected = {
-                        navigationState.navigateOnMainTo(it.screen.route)
-                    },
-                )
-            }
+            val navigationItems = listOf(
+                NavigationItem.Home,
+                NavigationItem.Favorites,
+                NavigationItem.Profile,
+            )
+            MainBottomBar(
+                navBackStackEntry = navBackStackEntry,
+                navigationItems = navigationItems,
+                onNavItemSelected = {
+                    navigationState.navigateOnMainTo(it.screen.route)
+                },
+            )
         }
     ) { paddingValues ->
         AppNavGraph(
             navHostController = navigationState.navHostController,
-            loginScreenContent = {
-                LoginScreen(
-                    onLoggedIn = {
-                        navigationState.navigateToMain()
-                    }
-                )
-            },
             newsFeedScreenContent = {
                 NewsFeedScreen(
                     paddingValues = paddingValues,

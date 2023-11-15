@@ -4,12 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
 
 @Composable
 fun AppNavGraph(
     navHostController: NavHostController,
-    loginScreenContent: @Composable () -> Unit,
     newsFeedScreenContent: @Composable () -> Unit,
     commentsScreenContent: @Composable (FeedPost) -> Unit,
     favoriteScreenContent: @Composable () -> Unit,
@@ -17,16 +16,17 @@ fun AppNavGraph(
 ) {
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Login.route,
+        startDestination = Screen.Home.route,
     ) {
-        composable(route = Screen.Login.route) {
-            loginScreenContent()
-        }
-        mainScreenNavGraph(
+        homeScreenNavGraph(
             newsFeedScreenContent = newsFeedScreenContent,
             commentsScreenContent = commentsScreenContent,
-            favoriteScreenContent = favoriteScreenContent,
-            profileScreenContent = profileScreenContent,
         )
+        composable(route = Screen.Favorite.route) {
+            favoriteScreenContent()
+        }
+        composable(route = Screen.Profile.route) {
+            profileScreenContent()
+        }
     }
 }

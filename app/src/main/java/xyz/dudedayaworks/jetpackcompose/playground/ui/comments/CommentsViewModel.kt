@@ -6,8 +6,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
-import xyz.dudedayaworks.jetpackcompose.playground.domain.PostComment
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.PostComment
 
 class CommentsViewModel(
     feedPost: FeedPost,

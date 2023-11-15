@@ -2,7 +2,7 @@ package xyz.dudedayaworks.jetpackcompose.playground.ui.comments
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
 
 @Suppress("UNCHECKED_CAST")
 class CommentsViewModelFactory(

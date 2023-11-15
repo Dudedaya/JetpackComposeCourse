@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.domain
+package xyz.dudedayaworks.jetpackcompose.playground.domain.models
 
 import xyz.dudedayaworks.jetpackcompose.playground.R
 

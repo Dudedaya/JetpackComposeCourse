@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.ui.auth
+package xyz.dudedayaworks.jetpackcompose.playground.ui.login
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,11 +37,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun LoginScreen(
-    onLoggedIn: () -> Unit,
-) {
-    val viewModel =
-        viewModel<LoginViewModel>(factory = LoginViewModel.factory())
+fun LoginScreen() {
+    val viewModel = viewModel<LoginViewModel>()
     val state by viewModel.state.collectAsState()
     Column(
         modifier = Modifier
@@ -58,7 +55,7 @@ fun LoginScreen(
             fontWeight = FontWeight.ExtraBold,
         )
         Spacer(modifier = Modifier.height(32.dp))
-        val inputEnabled = state == LoginScreenState.NotAuthorized
+        val inputEnabled = state == LoginScreenState.NotAuthenticated
                 || state is LoginScreenState.AuthError
         CredentialInputs(
             enabled = inputEnabled,
@@ -66,27 +63,14 @@ fun LoginScreen(
                 viewModel.onLogin(username, password)
             },
         )
-        when (val currentState = state) {
-            is LoginScreenState.AuthError -> {
-                Spacer(modifier = Modifier.height(32.dp))
-                Text(
-                    text = "Login error: ${currentState.errorMessage}",
-                    fontSize = 18.sp,
-                    color = Color.Red,
-                )
-            }
-
-            LoginScreenState.Authorized -> {
-                onLoggedIn()
-            }
-
-            LoginScreenState.Loading -> {
-                /* no-op */
-            }
-
-            LoginScreenState.NotAuthorized -> {
-                /* no-op */
-            }
+        val currentState = state
+        if (currentState is LoginScreenState.AuthError) {
+            Spacer(modifier = Modifier.height(32.dp))
+            Text(
+                text = "Login error: ${currentState.errorMessage}",
+                fontSize = 18.sp,
+                color = Color.Red,
+            )
         }
     }
 }

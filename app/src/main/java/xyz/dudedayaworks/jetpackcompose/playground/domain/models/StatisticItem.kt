@@ -1,4 +1,4 @@
-package xyz.dudedayaworks.jetpackcompose.playground.domain
+package xyz.dudedayaworks.jetpackcompose.playground.domain.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

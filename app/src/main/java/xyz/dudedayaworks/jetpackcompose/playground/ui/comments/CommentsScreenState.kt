@@ -1,7 +1,7 @@
 package xyz.dudedayaworks.jetpackcompose.playground.ui.comments
 
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
-import xyz.dudedayaworks.jetpackcompose.playground.domain.PostComment
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.PostComment
 
 sealed class CommentsScreenState {
     object Loading : CommentsScreenState()

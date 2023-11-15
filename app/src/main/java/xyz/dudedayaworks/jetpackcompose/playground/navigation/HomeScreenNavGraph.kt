@@ -5,7 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
-import xyz.dudedayaworks.jetpackcompose.playground.domain.FeedPost
+import xyz.dudedayaworks.jetpackcompose.playground.domain.models.FeedPost
 
 fun NavGraphBuilder.homeScreenNavGraph(
     newsFeedScreenContent: @Composable () -> Unit,
