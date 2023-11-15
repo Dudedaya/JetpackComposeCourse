@@ -29,8 +29,12 @@ data class FeedPost(
                 title = title,
                 createdAt = "14:00",
                 message = message,
-                imageUrl = PreviewProvider.randomImageUrl(id = id),
-                avatarUrl = PreviewProvider.randomImageUrl(id = id + 50, width = 128, height = 128),
+                imageUrl = PreviewProvider.randomImageUrl(id = id * 10),
+                avatarUrl = PreviewProvider.randomImageUrl(
+                    id = id * 10 + 150,
+                    width = 128,
+                    height = 128
+                ),
                 statistics = listOf(
                     StatisticItem(type = StatisticType.VIEWS, count = random.nextInt(1000)),
                     StatisticItem(type = StatisticType.SHARES, count = random.nextInt(1000)),
